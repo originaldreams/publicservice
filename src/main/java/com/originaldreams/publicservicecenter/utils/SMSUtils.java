@@ -45,6 +45,8 @@ public class SMSUtils {
 
 
 
+
+
     public static void sendSMS(String phone,String verificationCode) throws Exception{
 
         String result = sendTemplateSMS(phone,"1" ,new String[]{verificationCode,"10"});
@@ -217,11 +219,11 @@ public class SMSUtils {
     private static void setHttpHeader(AbstractHttpMessage httpMessage) {
             httpMessage.setHeader("Accept", "application/json");
             httpMessage.setHeader("Content-Type", "application/json;charset=utf-8");
-    }
+}
     public static void main(String[] args){
         try{
-            SMSUtils mySMSUtils = new SMSUtils();
-            mySMSUtils.sendSMS("17600109114","123");
+//            SMSUtils mySMSUtils = new SMSUtils();
+            SMSUtils.sendSMS("15515939171","12456");
         }catch (Exception e){
             e.printStackTrace();
         }
