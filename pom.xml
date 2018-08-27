@@ -5,7 +5,7 @@
 
     <groupId>com.originaldreams</groupId>
     <artifactId>publicservicecenter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>publicservicecenter</name>
@@ -68,7 +68,11 @@
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.originaldreams</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.5</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -90,6 +94,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>publicservice</finalName>
     </build>
 
 
