@@ -1,5 +1,6 @@
 package com.originaldreams.publicservicecenter.utils;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
+import com.originaldreams.common.util.StringUtils;
 import com.originaldreams.publicservicecenter.entity.SMSEntity;
 
 import java.util.HashMap;
@@ -83,7 +84,7 @@ public class SendSMSUtils {
         entity.setType(ConfigUtils.SMS_SEND_TYPE_REGISTER);
         entity.setPhone(phone);
         entity.setTemplateId(ConfigUtils.SMS_SEND_TEMPLATE_ID_REGISTER);
-        entity.setCodeStr("789456");
+        entity.setCodeStr(StringUtils.getNumbserString(ConfigUtils.SMS_SEND_LENGTH));
         entity.setMinuteStr(ConfigUtils.SMS_SEND_MINUTE_REGISTER);
         return sendSMS(entity);
     }
@@ -95,7 +96,7 @@ public class SendSMSUtils {
             SMSEntity entity = new SMSEntity();
             entity.setPhone("17600109114");
             entity.setTemplateId("1");
-            entity.setCodeStr("789456");
+            entity.setCodeStr(StringUtils.getNumbserString(ConfigUtils.SMS_SEND_LENGTH));
             entity.setMinuteStr("10");
             sendSMS(entity);
 //        HashMap<String, Object> result = null;
