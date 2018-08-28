@@ -19,4 +19,6 @@ public class ConfigUtils {
      */
     public static final String SMS_SEND_MINUTE_REGISTER = "5";
 
+    public static final int SMS_SEND_LENGTH = 6;
+
 }
