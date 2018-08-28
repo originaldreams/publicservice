@@ -1,10 +1,16 @@
 package com.originaldreams.publicservicecenter.utils;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
+import com.originaldreams.publicservicecenter.entity.SMSEntity;
 
 import java.util.HashMap;
 import java.util.Set;
 
-public class Test {
+/**
+ * 短信发送工具类
+ * @author yangkaile
+ * @date 2018-08-28 14:54:46
+ */
+public class SendSMSUtils {
 //    private static final String SERVER_IP     = "sandboxapp.cloopen.com";
 //    private static final String SERVER_PORT   = "8883";
 //    private static final String ACCOUNT_SID   = "8aaf07085b5fee9a015b85e01170103c";
@@ -19,6 +25,10 @@ public class Test {
     public static final String RESULT_STATUS_CODE = "statusCode";
     public static final String RESULT_SUCCESS_CODE = "000000";
 
+    /**
+     * 初始化短信发送SDK
+     * @return
+     */
     public static CCPRestSmsSDK init(){
         CCPRestSmsSDK restAPI = new CCPRestSmsSDK();
         restAPI.init(SERVER_IP, SERVER_PORT);
@@ -26,7 +36,13 @@ public class Test {
         restAPI.setAppId(App_ID);
         return restAPI;
     }
-    public static void getResult(HashMap<String, Object> result){
+
+    /**
+     * 检查发送结果
+     * @param result SDK返回的处理结果
+     * @return 发送成功 true; 发送失败 false
+     */
+    public static boolean checkResult(HashMap<String, Object> result){
         if(RESULT_SUCCESS_CODE.equals(result.get(RESULT_STATUS_CODE))){
             //正常返回输出data包体信息（map）
             HashMap<String,Object> data = (HashMap<String, Object>) result.get("data");
@@ -35,25 +51,53 @@ public class Test {
                 Object object = data.get(key);
                 System.out.println(key +" = "+object);
             }
+            return true;
         }else{
             //异常返回输出错误码和错误信息
             System.out.println("错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"));
+            return false;
         }
     }
-    public static void sendSMS(){
+
+    /**
+     * 通用的短信发送逻辑
+     * @param entity
+     * @return
+     */
+    public static boolean sendSMS(SMSEntity entity){
         HashMap<String, Object> result;
-        result = init().sendTemplateSMS("17600109114","1" ,new String[]{"666666","5"});
+        result = init().sendTemplateSMS(entity.getPhone(),entity.getTemplateId(),
+                new String[]{entity.getCodeStr(),entity.getMinuteStr()});
 
         System.out.println("SDKTestGetSubAccounts result=" + result);
-        getResult(result);
+        return checkResult(result);
     }
 
+    /**
+     * 发送短信验证码
+     * @param phone 手机号
+     * @return
+     */
+    public static boolean sendVerificationCode(String phone){
+        SMSEntity entity = new SMSEntity();
+        entity.setType(ConfigUtils.SMS_SEND_TYPE_REGISTER);
+        entity.setPhone(phone);
+        entity.setTemplateId(ConfigUtils.SMS_SEND_TEMPLATE_ID_REGISTER);
+        entity.setCodeStr("789456");
+        entity.setMinuteStr(ConfigUtils.SMS_SEND_MINUTE_REGISTER);
+        return sendSMS(entity);
+    }
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-            sendSMS();
+            SMSEntity entity = new SMSEntity();
+            entity.setPhone("17600109114");
+            entity.setTemplateId("1");
+            entity.setCodeStr("789456");
+            entity.setMinuteStr("10");
+            sendSMS(entity);
 //        HashMap<String, Object> result = null;
 
         //初始化SDK
