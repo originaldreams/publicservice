@@ -41,29 +41,28 @@ public class SMSController {
         MyServiceResponse response =new MyServiceResponse();
         if(phone == null || phone.isEmpty()){
             return MyResponse.badRequest();
-        }else{
-            SMSEntity entity = SendSMSUtils.sendVerificationCode(phone);
-            Map<String,Object> map = new HashMap<>();
-            map.put("phone",entity.getPhone());
-            map.put("type",entity.getType());
-            map.put("templateId",entity.getTemplateId());
-            map.put("codeStr",entity.getCodeStr());
-            map.put("minuteStr",entity.getMinuteStr());
-            map.put("result",entity.getResult());
-            map.put("statusCode",entity.getStatusCode());
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(MyRouter.LOG_SMS_LOG_INSERT +
-                    "?phone={phone}&type={type}&templateId={templateId}&codeStr={codeStr}" +
-                    "&minuteStr={minuteStr}&result={result}&statusCode={statusCode}",null,String.class,map);
-            logger.info("smsLog Ok  Response:" + responseEntity.getBody() + " entity:" + entity);
-
-
-            if(SendSMSUtils.RESULT_SUCCESS_CODE.equals(entity.getStatusCode())){
-                return MyResponse.ok(response);
-            }else {
-                response.setSuccess(MyServiceResponse.SUCCESS_CODE_FAILED);
-                response.setMessage("验证码发送失败");
-                return MyResponse.ok(response);
-            }
         }
+        SMSEntity entity = SendSMSUtils.sendVerificationCode(phone);
+        Map<String,Object> map = new HashMap<>();
+        map.put("phone",entity.getPhone());
+        map.put("type",entity.getType());
+        map.put("templateId",entity.getTemplateId());
+        map.put("codeStr",entity.getCodeStr());
+        map.put("minuteStr",entity.getMinuteStr());
+        map.put("result",entity.getResult());
+        map.put("statusCode",entity.getStatusCode());
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(MyRouter.LOG_SMS_LOG_INSERT +
+                "?phone={phone}&type={type}&templateId={templateId}&codeStr={codeStr}" +
+                "&minuteStr={minuteStr}&result={result}&statusCode={statusCode}",null,String.class,map);
+        logger.info("smsLog Ok  Response:" + responseEntity.getBody() + " entity:" + entity);
+
+        if(SendSMSUtils.RESULT_SUCCESS_CODE.equals(entity.getStatusCode())){
+            return MyResponse.ok(response);
+        }else {
+            response.setSuccess(MyServiceResponse.SUCCESS_CODE_FAILED);
+            response.setMessage("验证码发送失败");
+            return MyResponse.ok(response);
+        }
+
     }
 }
