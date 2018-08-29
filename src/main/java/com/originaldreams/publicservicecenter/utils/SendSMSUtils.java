@@ -2,9 +2,11 @@ package com.originaldreams.publicservicecenter.utils;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
 import com.originaldreams.common.util.StringUtils;
 import com.originaldreams.publicservicecenter.entity.SMSEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.Set;
+
 
 /**
  * 短信发送工具类
@@ -12,6 +14,10 @@ import java.util.Set;
  * @date 2018-08-28 14:54:46
  */
 public class SendSMSUtils {
+
+
+    private static Logger logger = LoggerFactory.getLogger(SendSMSUtils.class);
+
 //    private static final String SERVER_IP     = "sandboxapp.cloopen.com";
 //    private static final String SERVER_PORT   = "8883";
 //    private static final String ACCOUNT_SID   = "8aaf07085b5fee9a015b85e01170103c";
@@ -39,39 +45,18 @@ public class SendSMSUtils {
     }
 
     /**
-     * 检查发送结果
-     * @param result SDK返回的处理结果
-     * @return 发送成功 true; 发送失败 false
-     */
-    public static boolean checkResult(HashMap<String, Object> result){
-        if(RESULT_SUCCESS_CODE.equals(result.get(RESULT_STATUS_CODE))){
-            //正常返回输出data包体信息（map）
-            HashMap<String,Object> data = (HashMap<String, Object>) result.get("data");
-            Set<String> keySet = data.keySet();
-            for(String key:keySet){
-                Object object = data.get(key);
-                System.out.println(key +" = "+object);
-            }
-            return true;
-        }else{
-            //异常返回输出错误码和错误信息
-            System.out.println("错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"));
-            return false;
-        }
-    }
-
-    /**
      * 通用的短信发送逻辑
      * @param entity
      * @return
      */
-    public static boolean sendSMS(SMSEntity entity){
+    public static SMSEntity sendSMS(SMSEntity entity){
         HashMap<String, Object> result;
         result = init().sendTemplateSMS(entity.getPhone(),entity.getTemplateId(),
                 new String[]{entity.getCodeStr(),entity.getMinuteStr()});
 
-        System.out.println("SDKTestGetSubAccounts result=" + result);
-        return checkResult(result);
+        entity.setResult(result.toString());
+        entity.setStatusCode(result.get(RESULT_STATUS_CODE).toString());
+        return entity;
     }
 
     /**
@@ -79,7 +64,7 @@ public class SendSMSUtils {
      * @param phone 手机号
      * @return
      */
-    public static boolean sendVerificationCode(String phone){
+    public static SMSEntity sendVerificationCode(String phone){
         SMSEntity entity = new SMSEntity();
         entity.setType(ConfigUtils.SMS_SEND_TYPE_REGISTER);
         entity.setPhone(phone);
