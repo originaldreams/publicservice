@@ -95,4 +95,17 @@ public class SMSEntity {
     public void setMinuteStr(String minuteStr) {
         this.minuteStr = minuteStr;
     }
+
+    @Override
+    public String toString() {
+        return "SMSEntity{" +
+                "phone='" + phone + '\'' +
+                ", type=" + type +
+                ", templateId='" + templateId + '\'' +
+                ", codeStr='" + codeStr + '\'' +
+                ", minuteStr='" + minuteStr + '\'' +
+                ", result='" + result + '\'' +
+                ", statusCode='" + statusCode + '\'' +
+                '}';
+    }
 }
