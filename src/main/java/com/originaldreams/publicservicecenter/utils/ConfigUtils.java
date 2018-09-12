@@ -1,5 +1,7 @@
 package com.originaldreams.publicservicecenter.utils;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 /**
  * 暂时放一些静态变量配置
  * @author yangkaile
@@ -20,5 +22,18 @@ public class ConfigUtils {
     public static final String SMS_SEND_MINUTE_REGISTER = "5";
 
     public static final int SMS_SEND_LENGTH = 6;
+
+    public static final int EMAIL_SEND_TYPE_REGISTER = 0;
+
+    public static final String EMAIL_VERIFICATIONCODE_TITLE = "请查收您的验证码";
+
+    public static final String EMAIL_VERIFICATIONCODE_BODY = "您的验证码是:%1$s";
+
+
+    public static final int EMAIL_VERIFICATIONCODE_LENGTH = 6;
+
+    public static final int EMAIL_SEND_STATUSCODE_SUCCESS = 0;
+
+    public static final int EMAIL_SEND_STATUSCODE_FAILED = 1;
 
 }
