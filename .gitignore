@@ -4,3 +4,4 @@
 
 /publicservicecenter.iml
 
+src/main/resources/application-prod.properties
